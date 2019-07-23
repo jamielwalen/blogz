@@ -1,14 +1,21 @@
 <!doctype html>
 <html>
     <head>
-        <h1>Build a Blog</h1>
+        <link rel="stylesheet" type="text/css" href="static/style.css"/>
+            <nav>
+                    <a href="/home">Home</a>
+                    <a href="/all_posts">All Posts</a>
+                    <a href="/new_post">New Post</a>
+                    <div class="right">
+                            <a href="/login">Login</a>
+                            <a href="/logout">Logout</a>
+                    </div>
+                    
+            </nav> 
     </head>
-    <nav>
-        <a href="/blog">Main</a>
-        <a href="/newpost">Add A Blog</a>
-        
-    </nav> 
+    
 <body>
+
 
     {% block content %}
     {% endblock %}

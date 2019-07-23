@@ -7,13 +7,16 @@
 
         
             {% for title in titles %}
-            <h2> <a href="/blog?id={{title.id}}">{{title.blog_title}}</a></h2>
+            <h2> <a href="/blogs?id={{title.id}}">{{title.blog_title}}</a></h2>
             <br>{{title.blog_entry}}
+            <br>
+            <p>Written by <a href="/blog?user={{title.owner_id}}">{{title.owner.username}}</a></p>
+            
             <hr>   
                 
             
+                
             {% endfor %}
-        
 
 
     {% endif %}
