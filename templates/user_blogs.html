@@ -2,7 +2,7 @@
 
 {% block content %}
 {% for blog in blogs %}
-<h1>{{blog.blog_title}}</h1><br>
+<h1><a href="/blogs?id={{blog.id}}">{{blog.blog_title}}</h1><br>
 <p>{{blog.blog_entry}}</p>
 
 {% endfor %}

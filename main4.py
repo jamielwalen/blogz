@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session, flash
+from flask import Flask, request, redirect, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -132,8 +132,7 @@ def validate_info():
             db.session.commit()
             return redirect('/new_post')
         else:
-            flash('Duplicate User')
-            return redirect ('/register')
+            return "<h1>Duplicate User</h1>"
 
     else:
         return render_template('register.html', username_error=username_error, password_error=password_error, verify_error=verify_error, username=username, password=password, verify=verify)
@@ -171,16 +170,15 @@ def index():
 def individual_post():
     num = request.args.get('id')
     num2 = Task.query.get(num)
-    titles =  Task.query.all()
+    titles = Task.query.filter_by(id = num).all()
     
-    return render_template('individual.html', num2=num2, title="Build a Blog")
+    return render_template('individual.html', num2=num2, title="Build a Blog", titles= titles)
 
 @app.route('/user', methods=['POST', 'GET'])
 def user_posts():
-    
     user_id = request.args.get('id') 
-    titles = Task.query.filter_by(owner_id = user_id).all()
-    return render_template('todos.html', title="Blogz", titles = titles)
+    blogs = Task.query.filter_by(owner_id = user_id)
+    return render_template('user_blogs.html', blogs=blogs, title="Blogz")
     
 @app.route('/blog', methods=['POST', 'GET'])
 def users_posts():
@@ -199,7 +197,7 @@ def new_post():
 
 
 
-@app.route('/new_post', methods=['POST', 'GET'])
+@app.route('/new_post', methods=['POST'])
 def add_post():
 
     title_error=""
@@ -221,15 +219,13 @@ def add_post():
     if not title_error and not entry_error:
         titles = Task.query.all()
         owner = User.query.filter_by(username=session['username']).first()
-        new_blog = Task(blog_title, blog_entry, 0, owner)
+        new_blog = Task( blog_title, blog_entry, 0, owner)
         db.session.add(new_blog)
         db.session.commit()
         
         
-        
-        return render_template('individual.html', num2 = new_blog)
     
-            
+        return redirect('/blogs?id={{new_blog.id}}')
 
     else:
         return render_template('todos2.html',title_error=title_error, entry_error=entry_error, blog_entry=blog_entry, blog_title=blog_title)
